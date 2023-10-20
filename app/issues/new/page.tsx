@@ -30,10 +30,9 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
+  // Mag hier blijven staan, want we gebruiken de functie maar op 1 plek.
   const onSubmit = async (data: IssueForm) => {
     setError("");
-
-    if (!data) return;
 
     try {
       setSubmitting(true);
