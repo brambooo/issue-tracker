@@ -12,7 +12,6 @@ const IssuesPage = async () => {
     // skip: (page - 1) * pageSize,
     // take: pageSize,
   });
-  await delay(2000);
 
   return (
     <Flex direction="column" gap="3">
