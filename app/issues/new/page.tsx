@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import { Button, Callout, TextField, Text } from "@radix-ui/themes";
 
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 import "easymde/dist/easymde.min.css";
 
 import { useForm, Controller } from "react-hook-form";
@@ -15,7 +18,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
-import delay from "delay";
 export type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {

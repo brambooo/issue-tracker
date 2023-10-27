@@ -1,6 +1,5 @@
 import React from "react";
 import prisma from "@/prisma/client";
-import delay from "delay";
 import IssueActions from "./IssueActions";
 import IssueTable from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
