@@ -13,14 +13,14 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import z from "zod";
-import { createIssueSchema } from "@/app/validators/validationSchemas";
+import { issueSchema } from "@/app/validators/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
 
-export type IssueFormData = z.infer<typeof createIssueSchema>;
+export type IssueFormData = z.infer<typeof issueSchema>;
 
 interface Props {
   issue?: Issue;
@@ -35,7 +35,7 @@ const IssueForm = ({ issue }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
   });
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
@@ -47,7 +47,13 @@ const IssueForm = ({ issue }: Props) => {
     try {
       setSubmitting(true);
 
-      await axios.post("/api/issues", data);
+      if (issue) {
+        // Update
+        await axios.patch(`/api/issues/${issue.id}`, data);
+      } else {
+        await axios.post("/api/issues", data);
+      }
+
       router.push("/issues");
     } catch (error) {
       setError("An unexpected error occurred.");
@@ -84,7 +90,8 @@ const IssueForm = ({ issue }: Props) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button disabled={isSubmitting}>
-          Submit new Issue {isSubmitting && <Spinner />}
+          {issue ? "Update issue" : "Submit new issue"}{" "}
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
