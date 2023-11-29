@@ -18,9 +18,8 @@ const DeleteIssueButton = ({ issueId }: Props) => {
   const handleDeleteIssue = async () => {
     try {
       setIsDeleting(true);
-      throw new Error("Delete issue error");
       axios.delete(`/api/issues/${issueId}`);
-      router.push("/issues");
+      router.push("/issues/list");
       router.refresh();
     } catch (error) {
       setHasError(true);
